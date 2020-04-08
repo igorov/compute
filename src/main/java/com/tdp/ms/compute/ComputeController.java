@@ -76,4 +76,29 @@ public class ComputeController {
 		
 		return new ResponseEntity<SortResponse>(response, HttpStatus.OK);
 	}
+
+	@GetMapping("/sort/bubble/{cant}")
+	public ResponseEntity<SortResponse> bubbleSortDummy(@PathVariable int cant) {
+		log.info("Inicio del controller bubbleSortDummy");
+		Integer[] list = listaDesordenada(cant);
+		long iniTime = ZonedDateTime.now().toInstant().toEpochMilli();
+		bubbleSort.sort(list);
+		long diff = ZonedDateTime.now().toInstant().toEpochMilli() - iniTime;
+
+		SortResponse response = new SortResponse();
+		//response.setList(list);
+		response.setTime(diff);
+
+		return new ResponseEntity<SortResponse>(response, HttpStatus.OK);
+	}
+
+	private Integer[] listaDesordenada(int cant) {
+		Integer[] array = new Integer[cant];
+		int indice = 0;
+		for(int i = cant; i > 0 ; i--) {
+			log.info("elemento de lista: " + i);
+			array[indice++] = i;
+		}
+		return array;
+	}
 }
